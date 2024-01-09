@@ -119,6 +119,6 @@ func parseHTML(html string) (Tags, error) {
 	return Tags{
 		Title:       title[1],
 		Description: description[1],
-		Image:       "",
+		Image:       "https://pic2.zhimg.com/80/v2-f6b1f64a098b891b4ea1e3104b5b71f6_720w.png",
 	}, nil
 }
