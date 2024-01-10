@@ -1,9 +1,6 @@
 name = "zhihu-og"
 main = "./build/worker.mjs"
 compatibility_date = "2023-01-10"
-compatibility_flags = [
-    "streams_enable_constructors"
-]
 
 [build]
 command = "make build"
