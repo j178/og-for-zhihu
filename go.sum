@@ -1,4 +1,2 @@
 github.com/syumai/workers v0.21.0 h1:xgbJi904Cqe/9/yLbNLMiUTGCodG/A14Jm280Nkrzhc=
 github.com/syumai/workers v0.21.0/go.mod h1:ZnqmdiHNBrbxOLrZ/HJ5jzHy6af9cmiNZk10R9NrIEA=
-marwan.io/wasm-fetch v0.1.0 h1:0kKeCsry7IQfPmxj78FUWtO6qwXIaQqMmZbzbZz2rkw=
-marwan.io/wasm-fetch v0.1.0/go.mod h1:PlaZmevjPJGIy/BaqMtVjUKvrA8CgrDh+aomnuhmTO8=

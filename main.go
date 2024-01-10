@@ -1,20 +1,22 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"regexp"
 	"strings"
 
 	"github.com/syumai/workers"
-	fetch "marwan.io/wasm-fetch"
+	"github.com/syumai/workers/cloudflare/fetch"
 )
 
 func main() {
 	workers.Serve(http.HandlerFunc(index))
 }
 
-// NB: cannot use net/http, text/template
+// NB: cannot use net/http, text/template in tinygo
 
 const zhihuHost = "https://zhihu.com"
 
@@ -76,7 +78,9 @@ const tmplHTML = `
 func generate(req *http.Request) (string, error) {
 	// TODO: cache
 	url := zhihuHost + req.URL.Path
-	html, err := fetchHTML(url)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	html, err := fetchHTML(ctx, url)
 	if err != nil {
 		return "", err
 	}
@@ -93,15 +97,19 @@ func generate(req *http.Request) (string, error) {
 	), nil
 }
 
-func fetchHTML(url string) (string, error) {
-	resp, err := fetch.Fetch(
-		url,
-		&fetch.Opts{},
-	)
+func fetchHTML(ctx context.Context, url string) (string, error) {
+	c := fetch.NewClient()
+	req, _ := fetch.NewRequest(ctx, "GET", url, nil)
+	resp, err := c.Do(req, nil)
 	if err != nil {
 		return "", err
 	}
-	return string(resp.Body), nil
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	return string(body), nil
 }
 
 type Tags struct {
